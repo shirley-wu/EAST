@@ -4,7 +4,12 @@ import os
 
 import time
 import datetime
+
+import sys
+sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
+sys.path.append('/opt/ros/kinetic/lib/python2.7/dist-packages')
+
 import numpy as np
 import uuid
 import json
@@ -211,7 +216,7 @@ def main():
     global checkpoint_path
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', default=8769, type=int)
-    parser.add_argument('--checkpoint-path', default=checkpoint_path)
+    parser.add_argument('--checkpoint_path', default=checkpoint_path)
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
     checkpoint_path = args.checkpoint_path
