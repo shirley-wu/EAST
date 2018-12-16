@@ -63,6 +63,7 @@
 							<li> {% raw %}{{ text_lines.length }}{% endraw %} text lines </li>
 							<li v-for="tl in text_lines">
 							{% raw %}{{ tl }}{% endraw %}
+							<img id="result-image" :src="result_image_url">
 							</li>
 						</ul>
 					</div>
@@ -149,14 +150,36 @@
 					},
 				});
 
+				function zip() {
+				    var args = [].slice.call(arguments);
+				    var shortest = args.length==0 ? [] : args.reduce(function(a,b){
+				        return a.length<b.length ? a : b
+				    });
+
+				    return shortest.map(function(_,i){
+				        return args.map(function(array){return array[i]})
+				    });
+				}
+
+				var names = function(len) {
+					var ns = new Array();
+					for (var i = 0; i < len; i++) {
+						ns[i] = '/static/results/' + app.session_id + '/output' + i + '.png';
+					}
+					return ns;
+				}
+
 				var render = function(session_id) {
 					app.session_id = session_id;
-					app.text_lines = ['loading'];
+					app.text_lines = [];
 					$.get('/static/results/' + session_id + '/result.json', function(data) {
 						if (typeof data == 'string') {
 							data = JSON.parse(data);
 						}
-						app.text_lines = data.text_lines;
+						app.text_lines = zip(data.text_lines, names(data.text_lines.length));
+						console.log("hi");
+						console.log(data.text_lines.length);
+						console.log(zip(data.text_lines, names(data.text_lines.length)));
 						app.rtparams = data.rtparams;
 						app.timing = data.timing;
 						app.cpuinfo = data.cpuinfo
