@@ -45,6 +45,7 @@ def get_predictor(checkpoint_path):
     from icdar import restore_rectangle
     import lanms
     from eval import resize_image, sort_poly, detect
+    from recognizer import part_of_img
 
     input_images = tf.placeholder(tf.float32, shape=[None, None, None, 3], name='input_images')
     global_step = tf.get_variable('global_step', [], initializer=tf.constant_initializer(0), trainable=False)
@@ -88,6 +89,10 @@ def get_predictor(checkpoint_path):
             }
         }
         """
+        print(type(img))
+        print(img.shape)
+        cv2.imshow("img", img)
+        print(cv2.waitKey(0))
         start_time = time.time()
         rtparams = collections.OrderedDict()
         rtparams['start_time'] = datetime.datetime.now().isoformat()
@@ -131,6 +136,7 @@ def get_predictor(checkpoint_path):
                 tl = collections.OrderedDict(zip(
                     ['x0', 'y0', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3'],
                     map(float, box.flatten())))
+                part_of_img(img, tl)
                 tl['score'] = float(score)
                 text_lines.append(tl)
         ret = {
