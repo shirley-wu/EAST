@@ -26,3 +26,4 @@ def part_of_img (img, tl):
     print(cv2.waitKey(0))
     cv2.imshow("img", dst)
     print(cv2.waitKey(0))
+    return dst

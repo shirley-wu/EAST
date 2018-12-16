@@ -127,16 +127,20 @@ def get_predictor(checkpoint_path):
         logger.info('[timing] {}'.format(duration))
 
         text_lines = []
+        parts = []
         if boxes is not None:
             text_lines = []
-            for box, score in zip(boxes, scores):
+            for i, (box, score) in enumerate(zip(boxes, scores)):
                 box = sort_poly(box.astype(np.int32))
                 if np.linalg.norm(box[0] - box[1]) < 5 or np.linalg.norm(box[3]-box[0]) < 5:
                     continue
                 tl = collections.OrderedDict(zip(
                     ['x0', 'y0', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3'],
                     map(float, box.flatten())))
-                part_of_img(img, tl)
+                res = part_of_img(img, tl)
+                cv2.imshow("res", res)
+                cv2.waitKey(0)
+                parts.append(res)
                 tl['score'] = float(score)
                 text_lines.append(tl)
         ret = {
@@ -145,7 +149,7 @@ def get_predictor(checkpoint_path):
             'timing': timer,
         }
         ret.update(get_host_info())
-        return ret
+        return ret, parts
 
 
     return predictor
@@ -179,7 +183,7 @@ def draw_illu(illu, rst):
     return illu
 
 
-def save_result(img, rst):
+def save_result(img, rst, parts):
     session_id = str(uuid.uuid1())
     dirpath = os.path.join(config.SAVE_DIR, session_id)
     os.makedirs(dirpath)
@@ -197,6 +201,12 @@ def save_result(img, rst):
     with open(output_path, 'w') as f:
         json.dump(rst, f)
 
+    # save partial results
+    for i, res in enumerate(parts):
+        output_path = os.path.join(dirpath, 'output' + str(i) + '.png')
+        print("path", output_path)
+        cv2.imwrite(output_path, res)
+
     rst['session_id'] = session_id
     return rst
 
@@ -212,9 +222,9 @@ def index_post():
     bio = io.BytesIO()
     request.files['image'].save(bio)
     img = cv2.imdecode(np.frombuffer(bio.getvalue(), dtype='uint8'), 1)
-    rst = get_predictor(checkpoint_path)(img)
+    rst, parts = get_predictor(checkpoint_path)(img)
 
-    save_result(img, rst)
+    save_result(img, rst, parts)
     return render_template('index.html', session_id=rst['session_id'])
 
 
