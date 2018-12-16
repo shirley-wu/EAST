@@ -61,9 +61,9 @@
 					<div>
 						<ul>
 							<li> {% raw %}{{ text_lines.length }}{% endraw %} text lines </li>
-							<li v-for="tl in text_lines">
-							{% raw %}{{ tl }}{% endraw %}
-							<img id="result-image" :src="result_image_url">
+							<li v-for="[tl, path] in text_lines">
+							{% raw %}{{ tl }}!!!!{{ path }}{% endraw %}
+							<img id="result-image" v_bind:src="path">
 							</li>
 						</ul>
 					</div>
@@ -177,9 +177,6 @@
 							data = JSON.parse(data);
 						}
 						app.text_lines = zip(data.text_lines, names(data.text_lines.length));
-						console.log("hi");
-						console.log(data.text_lines.length);
-						console.log(zip(data.text_lines, names(data.text_lines.length)));
 						app.rtparams = data.rtparams;
 						app.timing = data.timing;
 						app.cpuinfo = data.cpuinfo
