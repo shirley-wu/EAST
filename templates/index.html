@@ -62,8 +62,8 @@
 						<ul>
 							<li> {% raw %}{{ text_lines.length }}{% endraw %} text lines </li>
 							<li v-for="[tl, path] in text_lines">
-							{% raw %}{{ tl }}!!!!{{ path }}{% endraw %}
-							<img id="result-image" v_bind:src="path">
+							{% raw %}{{ tl }}{% endraw %}
+							<img :src="path">
 							</li>
 						</ul>
 					</div>
