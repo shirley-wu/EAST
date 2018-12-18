@@ -8,7 +8,7 @@ import numpy as np
 
 
 def part_of_img (img, tl):
-    print(tl)
+    # print(tl)
     pts1   = np.float32([
         [tl['x0'], tl['y0']], [tl['x1'], tl['y1']],
         [tl['x2'], tl['y2']], [tl['x3'], tl['y3']]
@@ -22,8 +22,8 @@ def part_of_img (img, tl):
     print(pts2)
     M = cv2.getPerspectiveTransform(pts1, pts2)
     dst = cv2.warpPerspective(img, M, (int(width), int(height)))
-    cv2.imshow("img", img)
-    print(cv2.waitKey(0))
-    cv2.imshow("img", dst)
-    print(cv2.waitKey(0))
+    # cv2.imshow("img", img)
+    # print(cv2.waitKey(0))
+    # cv2.imshow("img", dst)
+    # print(cv2.waitKey(0))
     return dst

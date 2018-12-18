@@ -1,17 +1,17 @@
 import torch
 from torch.autograd import Variable
-import utils
-import dataset
+from . import utils
+from . import dataset
 
 import sys
 sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
 sys.path.append('/opt/ros/kinetic/lib/python2.7/dist-packages')
 
-import models.crnn as crnn
+from .models import crnn
 
 
-model_path = './data/crnn.pth'
+model_path = './recognizer/data/crnn.pth'
 alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
 
 model = crnn.CRNN(32, 1, 37, 256)
@@ -29,18 +29,13 @@ def recognize(img):
     if img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = transformer(img)
-
-
-if __name__ == '__main__':
-    image = Image.open(img_path).convert('L')
-    image = transformer(image)
     if torch.cuda.is_available():
-        image = image.cuda()
-    image = image.view(1, *image.size())
-    image = Variable(image)
+        img = img.cuda()
+    img = img.view(1, *img.size())
+    img = Variable(img)
 
     model.eval()
-    preds = model(image)
+    preds = model(img)
 
     _, preds = preds.max(2)
     preds = preds.transpose(1, 0).contiguous().view(-1)
@@ -48,4 +43,4 @@ if __name__ == '__main__':
     preds_size = Variable(torch.IntTensor([preds.size(0)]))
     raw_pred = converter.decode(preds.data, preds_size.data, raw=True)
     sim_pred = converter.decode(preds.data, preds_size.data, raw=False)
-    print('%-20s => %-20s' % (raw_pred, sim_pred))
+    return '%-20s => %-20s'.format(raw_pred, sim_pred)
