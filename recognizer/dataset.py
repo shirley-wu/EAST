@@ -9,7 +9,6 @@ import torchvision.transforms as transforms
 import lmdb
 import six
 import sys
-from PIL import Image
 import numpy as np
 
 
@@ -68,13 +67,12 @@ class lmdbDataset(Dataset):
 
 class resizeNormalize(object):
 
-    def __init__(self, size, interpolation=Image.BILINEAR):
+    def __init__(self, size):
         self.size = size
-        self.interpolation = interpolation
         self.toTensor = transforms.ToTensor()
 
     def __call__(self, img):
-        img = img.resize(self.size, self.interpolation)
+        img.resize([img.shape[0], img.shape[1], 1])
         img = self.toTensor(img)
         img.sub_(0.5).div_(0.5)
         return img
