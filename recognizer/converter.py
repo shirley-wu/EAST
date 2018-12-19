@@ -18,8 +18,8 @@ def part_of_img (img, tl):
     pts2   = np.float32([
         [0, 0], [width, 0], [width, height], [0, height]
     ])
-    print(pts1)
-    print(pts2)
+    # print(pts1)
+    # print(pts2)
     M = cv2.getPerspectiveTransform(pts1, pts2)
     dst = cv2.warpPerspective(img, M, (int(width), int(height)))
     # cv2.imshow("img", img)

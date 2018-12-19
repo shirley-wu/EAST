@@ -72,7 +72,8 @@ class resizeNormalize(object):
         self.toTensor = transforms.ToTensor()
 
     def __call__(self, img):
-        img.resize([img.shape[0], img.shape[1], 1])
+        # print(self.size)
+        img = np.resize(img, [self.size[1], self.size[0], 1])
         img = self.toTensor(img)
         img.sub_(0.5).div_(0.5)
         return img

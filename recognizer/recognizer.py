@@ -29,6 +29,7 @@ def recognize(img):
     if img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = transformer(img)
+    # print("image_size", img.size())
     if torch.cuda.is_available():
         img = img.cuda()
     img = img.view(1, *img.size())
@@ -43,4 +44,4 @@ def recognize(img):
     preds_size = Variable(torch.IntTensor([preds.size(0)]))
     raw_pred = converter.decode(preds.data, preds_size.data, raw=True)
     sim_pred = converter.decode(preds.data, preds_size.data, raw=False)
-    return '%-20s => %-20s'.format(raw_pred, sim_pred)
+    return raw_pred + ' => ' + sim_pred

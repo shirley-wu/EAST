@@ -205,7 +205,7 @@ def save_result(img, rst, parts):
     # save partial results
     for i, res in enumerate(parts):
         output_path = os.path.join(dirpath, 'output' + str(i) + '.png')
-        print("path", output_path)
+        # print("path", output_path)
         cv2.imwrite(output_path, res)
 
     rst['session_id'] = session_id
