@@ -230,7 +230,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', default=8769, type=int)
     parser.add_argument('--checkpoint_path', default=checkpoint_path)
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--debug', default=True, action='store_true')
     args = parser.parse_args()
     checkpoint_path = args.checkpoint_path
 

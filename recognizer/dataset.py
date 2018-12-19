@@ -6,6 +6,7 @@ import torch
 from torch.utils.data import Dataset
 from torch.utils.data import sampler
 import torchvision.transforms as transforms
+import cv2
 import lmdb
 import six
 import sys
@@ -73,9 +74,8 @@ class resizeNormalize(object):
         self.interpolation = interpolation
 
     def __call__(self, img):
-        # print(self.size)
-        img = cv2.resize(img, [self.size[1], self.size[0], 1],
-            interpolation=self.interpolation)
+        img = cv2.resize(img, self.size, interpolation=self.interpolation)
+        img = np.resize(img, [self.size[1], self.size[0], 1])
         img = self.toTensor(img)
         img.sub_(0.5).div_(0.5)
         return img
