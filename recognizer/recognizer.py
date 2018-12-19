@@ -2,12 +2,7 @@ import torch
 from torch.autograd import Variable
 from . import utils
 from . import dataset
-
-import sys
-sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
-sys.path.append('/opt/ros/kinetic/lib/python2.7/dist-packages')
-
 from .models import crnn
 
 
