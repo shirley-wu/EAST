@@ -68,14 +68,16 @@ class lmdbDataset(Dataset):
 
 class resizeNormalize(object):
 
-    def __init__(self, size, interpolation=cv2.INTER_LINEAR):
-        self.size = size
+    def __init__(self, height, interpolation=cv2.INTER_LINEAR):
+        self.height = height
         self.toTensor = transforms.ToTensor()
         self.interpolation = interpolation
 
     def __call__(self, img):
-        img = cv2.resize(img, self.size, interpolation=self.interpolation)
-        img = np.resize(img, [self.size[1], self.size[0], 1])
+        height = self.height
+        width = int(img.shape[1] * height / img.shape[0])
+        img = cv2.resize(img, (width, height), interpolation=self.interpolation)
+        img = np.resize(img, (height, width, 1))
         img = self.toTensor(img)
         img.sub_(0.5).div_(0.5)
         return img
