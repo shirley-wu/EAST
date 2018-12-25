@@ -2,7 +2,7 @@ Modified versioff of repo [EAST](https://github.com/argman/EAST). Add word recog
 
 ### How to run this demo
 
-Download the pretrained models of these two repos. Put crnn.pth under recognizer/data, and unzip east\_icdar2015\_resnet\_v1\_50\_rbox.zip into your directory.
+Download the pretrained models of these two repos. Put crnn.pth under recognizer/data, and unzip east\_icdar2015\_resnet\_v1\_50\_rbox.zip into east_model_dir.
 
 Then run ```pythoff run_demo_server.py --checkpoint_path [east_model_dir]```.
 
