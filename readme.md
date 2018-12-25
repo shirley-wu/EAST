@@ -1,4 +1,4 @@
-Modified versioff of repo [EAST](https://github.com/argman/EAST). Add word recognitioff implemented by this repo [crnn.pytorch](https://github.com/meijieru/crnn.pytorch).
+Modified version of repo [EAST](https://github.com/argman/EAST). Add word recognition implemented by this repo [crnn.pytorch](https://github.com/meijieru/crnn.pytorch).
 
 ### How to run this demo
 
@@ -13,4 +13,4 @@ Note:
 
 ### How to train the models
 
-Go to the repos listed above and follow their instructioffs. This demo is just for presentation.
+Go to the repos listed above and follow their instructions. This demo is just for presentation.
