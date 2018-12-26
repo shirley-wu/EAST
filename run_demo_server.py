@@ -154,7 +154,7 @@ def get_predictor(checkpoint_path):
 
 ### the webserver
 from flask import Flask, request, render_template
-import argparse
+import yaml
 
 
 class Config:
@@ -227,19 +227,16 @@ def index_post():
 
 def main():
     global checkpoint_path
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--port', default=8769, type=int)
-    parser.add_argument('--checkpoint_path', default=checkpoint_path)
-    parser.add_argument('--debug', default=True, action='store_true')
-    args = parser.parse_args()
-    checkpoint_path = args.checkpoint_path
+    with open('config.dat') as f:
+        x = yaml.load(f)
+    checkpoint_path = x['checkpoint_path']
 
-    if not os.path.exists(args.checkpoint_path):
+    if not os.path.exists(checkpoint_path):
         raise RuntimeError(
-            'Checkpoint `{}` not found'.format(args.checkpoint_path))
+            'Checkpoint `{}` not found'.format(checkpoint_path))
 
-    app.debug = args.debug
-    app.run('0.0.0.0', args.port)
+    app.debug = x['debug']
+    app.run(x['url'], x['port'])
 
 if __name__ == '__main__':
     main()

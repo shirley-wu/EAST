@@ -108,3 +108,4 @@ static/results
 
 # data
 *.pth
+config.dat
